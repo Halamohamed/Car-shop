@@ -35,7 +35,7 @@ public class CarService {
     public Car saveCar(Car car){
         log.info("Request to save car to database");
         log.warn("fresh data");
-       return carRepository.save(car);
+        return carRepository.save(car);
     }
 
     public void updateCar(Car car, String id){

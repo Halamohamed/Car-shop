@@ -25,7 +25,7 @@ public class AppUser {
     private String lastname;
     @Email(message = "E-mail address invalid")
     private String mail;
-    @Pattern(regexp = "([0-9]){2,4}-([0-9]){5,8}", message = "Phone number invalid")
+    //@Pattern(regexp = "([0-9]){2,4}-([0-9]){5,8}", message = "Phone number invalid")
     private String phone;
     @NotBlank(message = "Username must contain a value")
     @Indexed(unique = true)
