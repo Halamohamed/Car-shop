@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/users")
+@RequestMapping("/api/shop/users")
 public class AppUserController {
     @Autowired
     private AppUserService userService;
@@ -21,7 +21,7 @@ public class AppUserController {
        return ResponseEntity.ok(userService.getAllUsers());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getUserbyId(@PathVariable String id){
+    public ResponseEntity<AppUser> getUserById(@PathVariable String id){
         return ResponseEntity.ok(userService.getUserbyId(id));
     }
     @PostMapping
@@ -29,11 +29,11 @@ public class AppUserController {
         return ResponseEntity.ok(userService.saveUser(user));
     }
     @PutMapping("/{id}")
-    public void uppdate(@Validated @RequestBody AppUser user,@PathVariable String id){
+    public void update(@Validated @RequestBody AppUser user,@PathVariable String id){
         userService.uppdateUser(user,id);
     }
     @DeleteMapping("/{id}")
-    public void delet(@PathVariable String id){
+    public void delete(@PathVariable String id){
         userService.deleteUser(id);
     }
 }

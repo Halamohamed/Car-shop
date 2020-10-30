@@ -2,6 +2,9 @@ package se.ecutb.cardealers.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 public class CarService {
     private final CarRepository carRepository;
 
+    @Cacheable(value = "carCache")
     public List<Car> getAllCars(){
         log.info("Request to find all cars");
         log.warn("fresh data");
@@ -24,6 +28,7 @@ public class CarService {
 
     }
 
+    @Cacheable(value = "carCache", key = "#id")
     public Car getCarById(String id){
         log.info("Request to find car by id");
         log.warn("fresh data");
@@ -32,12 +37,14 @@ public class CarService {
                         String.format("Could not find car by id %s.", id)));
     }
 
+    @CachePut(value = "carCache", key = "#result.id")
     public Car saveCar(Car car){
         log.info("Request to save car to database");
         log.warn("fresh data");
         return carRepository.save(car);
     }
 
+    @CachePut(value = "carCache", key = "#id")
     public void updateCar(Car car, String id){
         log.info("Request to update car");
         log.warn("fresh data");
@@ -49,6 +56,7 @@ public class CarService {
         carRepository.save(car);
     }
 
+    @CacheEvict(value = "carCache", key = "#id")
     public void deleteCar(String id){
         log.info("Request to delete car by id");
         log.warn("fresh data");
@@ -60,6 +68,8 @@ public class CarService {
     }
 
     public List<Car> getCarByBrand(String brand){
+        log.info("Request to get cars by brand");
+        log.warn("fresh data");
         return carRepository.findAll().stream()
                 .filter(car -> car.getBrand().contains(brand) ||
                         car.getBrand().equals(brand))
@@ -67,6 +77,8 @@ public class CarService {
     }
 
     public List<Car> getCarByModel(String model){
+        log.info("Request to get cars by model");
+        log.warn("fresh data");
         return carRepository.findAll().stream()
                 .filter(car -> car.getModel().contains(model) ||
                         car.getModel().equals(model))
@@ -74,12 +86,16 @@ public class CarService {
     }
 
     public List<Car> getCarByNoOfSeats(int numOfSeats){
+        log.info("Request to get cars by numOfSeats");
+        log.warn("fresh data");
         return carRepository.findAll().stream()
                 .filter(car -> car.getNumOfSeats() == numOfSeats)
                 .collect(Collectors.toList());
     }
 
     public Car getCarByRegisterNo(String registerNo){
+        log.info("Request to get car by register number");
+        log.warn("fresh data");
         var registerCar = carRepository.findAll();
         return registerCar.stream()
                 .filter(car -> car.getRegisterNo().equals(registerNo))
@@ -88,6 +104,8 @@ public class CarService {
     }
 
     public List<Car> getCarByPrice(Double price){
+        log.info("Request to get cars by price");
+        log.warn("fresh data");
         var priceCar = carRepository.findAll();
         return priceCar.stream()
                 .filter(car -> car.getPrice().equals(price))

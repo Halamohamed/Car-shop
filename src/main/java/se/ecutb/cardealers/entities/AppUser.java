@@ -9,12 +9,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class AppUser {
+public class AppUser implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     private String id;
     @NotEmpty(message = "Firstname can not be empty")
