@@ -22,7 +22,7 @@ public class CarService {
     private final CarRepository carRepository;
 
     @Cacheable(value = "carCache")
-    public List<Car> getAllCars(String brand, String model, String status, double price,boolean sort){
+    public List<Car> getAllCars(String brand, String model, String status, Double price,boolean sort){
         log.info("Request to find all cars");
         log.warn("fresh data");
         var cars = carRepository.findAll();
@@ -32,9 +32,9 @@ public class CarService {
 
         if(status != null) cars = getCarByStatus(status);
 
-        if(price != 0)   cars = getCarByPrice(price);
+        if(price != null)   cars = getCarByPrice(price);
 
-        if(sort)  cars.stream().sorted(Comparator.comparing(Car::getPrice));
+        if(sort)  cars.sort(Comparator.comparing(Car::getPrice));
 
         return cars;
     }
