@@ -8,13 +8,16 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.Year;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class Car {
+public class Car implements Serializable {
+
+    private static final long serialVersionUID = 8560960820579391011L;
     @Id
     private String id;
     @NotEmpty(message = "Brand can not be empty")
@@ -26,7 +29,7 @@ public class Car {
     @NotEmpty(message = "RegisterNumber can not be empty")
     private String registerNo;
     private Double price;
-    private Year yearModel;
+    private int yearModel;
     private int weight;
     private int numOfSeats;
     private List<String> equipment;
@@ -34,8 +37,8 @@ public class Car {
     private String fuel;
     private String gearbox;
     private int horsepower;
-    private CarType carType;
+    private String carType;
     private String carAge;
-    private CarStatus status;
+    private String status;
 
 }
