@@ -23,7 +23,7 @@ public class AppUserService  {
         return userRepository.findAll();
      }
     @Cacheable(value = "userCache",key = "#id")
-     public AppUser getUserbyId(String id){
+     public AppUser getUserById(String id){
          log.info("Request to find User by Id");
          return userRepository.findById(id).orElseThrow(()->new
                  ResponseStatusException(HttpStatus.NOT_FOUND,String.format("Could not Find User by Id%",id)));
@@ -34,7 +34,7 @@ public class AppUserService  {
          return userRepository.save(user);
      }
     @CachePut(value = "userCache",key = "#id")
-     public void uppdateUser(AppUser user,String id){
+     public void updateUser(AppUser user,String id){
          log.info("Request to Uppdate User ");
          if (!userRepository.existsById(id)){
              throw new

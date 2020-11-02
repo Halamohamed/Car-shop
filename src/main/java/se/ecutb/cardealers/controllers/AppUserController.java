@@ -22,7 +22,7 @@ public class AppUserController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<AppUser> getUserById(@PathVariable String id){
-        return ResponseEntity.ok(userService.getUserbyId(id));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
     @PostMapping
     public ResponseEntity<AppUser> saveUser(@Validated @RequestBody AppUser user){
@@ -30,7 +30,7 @@ public class AppUserController {
     }
     @PutMapping("/{id}")
     public void update(@Validated @RequestBody AppUser user,@PathVariable String id){
-        userService.uppdateUser(user,id);
+        userService.updateUser(user,id);
     }
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id){
