@@ -20,8 +20,11 @@ public class CarController {
 
 
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars(){
-        return ResponseEntity.ok(carService.getAllCars());
+    public ResponseEntity<List<Car>> getAllCars(@RequestParam(required = false) String brand,
+                                                @RequestParam(required = false) String model,
+                                                @RequestParam(required = false) String status,
+                                                @RequestParam(required = false) double price){
+        return ResponseEntity.ok(carService.getAllCars(brand,model,status,price));
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
@@ -48,5 +51,58 @@ public class CarController {
     }
 
 
+    @GetMapping("/{brand}")
+    public ResponseEntity<List<Car>> getCarByBrand(@PathVariable String brand){
+        return ResponseEntity.ok(carService.getCarByBrand(brand));
+    }
+
+    @GetMapping("/{registerNo}")
+    public ResponseEntity<Car> getCarByRegisterNo(@PathVariable String registerNo){
+        return ResponseEntity.ok(carService.getCarByRegisterNo(registerNo));
+    }
+
+    @GetMapping("/{model}")
+    public ResponseEntity<List<Car>> getCarByModel(@PathVariable String model){
+        return ResponseEntity.ok(carService.getCarByModel(model));
+    }
+
+    @GetMapping("/{price}")
+    public ResponseEntity<List<Car>> getCarByPrice(@PathVariable Double price){
+        return ResponseEntity.ok(carService.getCarByPrice(price));
+    }
+
+    @GetMapping("/{carType}")
+    public ResponseEntity<List<Car>> getCarByType(@PathVariable String carType){
+        return ResponseEntity.ok(carService.getCarByType(carType));
+    }
+
+    @GetMapping("/{status}")
+    public ResponseEntity<List<Car>> getCarByStatus(@PathVariable String status){
+        return ResponseEntity.ok(carService.getCarByStatus(status));
+    }
+    @GetMapping("/{fuel}")
+    public ResponseEntity<List<Car>> getCarByFuel(@PathVariable String fuel){
+        return ResponseEntity.ok(carService.getCarByFuel(fuel));
+    }
+
+    @GetMapping("/{noOfSeat}")
+    public ResponseEntity<List<Car>> getCarByNoOfSeat(@PathVariable int noOfSeat){
+        return ResponseEntity.ok(carService.getCarByNoOfSeats(noOfSeat));
+    }
+
+    @GetMapping("/{gearbox}")
+    public ResponseEntity<List<Car>> getCarByGearbox(@PathVariable String gearbox){
+        return ResponseEntity.ok(carService.getCarByGearbox(gearbox));
+    }
+
+    @GetMapping("/{milNo}")
+    public ResponseEntity<List<Car>> getCarByMilNo(@PathVariable int milNo){
+        return ResponseEntity.ok(carService.getCarByMileNo(milNo));
+    }
+
+    @GetMapping("/{horsepower}")
+    public ResponseEntity<List<Car>> getCarByHorsepower(@PathVariable int horsepower){
+        return ResponseEntity.ok(carService.getCarByHorsepower(horsepower));
+    }
 
 }

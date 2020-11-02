@@ -21,10 +21,20 @@ public class CarService {
     private final CarRepository carRepository;
 
     @Cacheable(value = "carCache")
-    public List<Car> getAllCars(){
+    public List<Car> getAllCars(String brand, String model, String status, double price){
         log.info("Request to find all cars");
         log.warn("fresh data");
-        return carRepository.findAll();
+        var car = carRepository.findAll();
+        if(brand != null){
+            car = getCarByBrand(brand);
+        }
+        if(model != null){
+            car = getCarByModel(model);
+        }
+        if(status != null){
+            car = getCarByStatus(status);
+        }
+        return car;
 
     }
 
@@ -135,10 +145,10 @@ public class CarService {
                 .filter(car -> car.getGearbox().equals(gearbox))
                 .collect(Collectors.toList());
     }
-    public List<Car> getCarByMileNo(int milno){
-        var milnoCar = carRepository.findAll();
-        return milnoCar.stream()
-                .filter(car -> car.getMileNo() == milno)
+    public List<Car> getCarByMileNo(int milNo){
+        var milNoCar = carRepository.findAll();
+        return milNoCar.stream()
+                .filter(car -> car.getMileNo() == milNo)
                 .collect(Collectors.toList());
     }
     public List<Car> getCarByHorsepower(int horsepower){
