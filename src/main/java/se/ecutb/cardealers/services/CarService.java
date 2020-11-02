@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import se.ecutb.cardealers.entities.Car;
 import se.ecutb.cardealers.repositories.CarRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,21 +22,21 @@ public class CarService {
     private final CarRepository carRepository;
 
     @Cacheable(value = "carCache")
-    public List<Car> getAllCars(String brand, String model, String status, double price){
+    public List<Car> getAllCars(String brand, String model, String status, double price,boolean sort){
         log.info("Request to find all cars");
         log.warn("fresh data");
-        var car = carRepository.findAll();
-        if(brand != null){
-            car = getCarByBrand(brand);
-        }
-        if(model != null){
-            car = getCarByModel(model);
-        }
-        if(status != null){
-            car = getCarByStatus(status);
-        }
-        return car;
+        var cars = carRepository.findAll();
+        if(brand != null) cars = getCarByBrand(brand);
 
+        if(model != null) cars = getCarByModel(model);
+
+        if(status != null) cars = getCarByStatus(status);
+
+        if(price != 0)   cars = getCarByPrice(price);
+
+        if(sort)  cars.stream().sorted(Comparator.comparing(Car::getPrice));
+
+        return cars;
     }
 
     @Cacheable(value = "carCache", key = "#id")

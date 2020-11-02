@@ -23,8 +23,9 @@ public class CarController {
     public ResponseEntity<List<Car>> getAllCars(@RequestParam(required = false) String brand,
                                                 @RequestParam(required = false) String model,
                                                 @RequestParam(required = false) String status,
-                                                @RequestParam(required = false) double price){
-        return ResponseEntity.ok(carService.getAllCars(brand,model,status,price));
+                                                @RequestParam(required = false) double price,
+                                                @RequestParam(required = false) boolean sort){
+        return ResponseEntity.ok(carService.getAllCars(brand,model,status,price,sort));
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
