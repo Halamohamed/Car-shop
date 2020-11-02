@@ -111,4 +111,40 @@ public class CarService {
                 .filter(car -> car.getPrice().equals(price))
                 .collect(Collectors.toList());
     }
+    public List<Car> getCarByType(String type){
+        var typeCar = carRepository.findAll();
+        return typeCar.stream()
+                .filter(car -> car.getCarType().equals(type))
+                .collect(Collectors.toList());
+    }
+    public List<Car> getCarByStatus(String status){
+        var statusCar = carRepository.findAll();
+        return statusCar.stream()
+                .filter(car -> car.getStatus().equals(status))
+                .collect(Collectors.toList());
+    }
+    public List<Car> getCarByFuel(String fuel){
+        var fuelCar = carRepository.findAll();
+        return fuelCar.stream()
+                .filter(car -> car.getFuel().equals(fuel))
+                .collect(Collectors.toList());
+    }
+    public List<Car> getCarByGearbox(String gearbox){
+        var gearboxCar = carRepository.findAll();
+        return gearboxCar.stream()
+                .filter(car -> car.getGearbox().equals(gearbox))
+                .collect(Collectors.toList());
+    }
+    public List<Car> getCarByMileNo(int milno){
+        var milnoCar = carRepository.findAll();
+        return milnoCar.stream()
+                .filter(car -> car.getMileNo() == milno)
+                .collect(Collectors.toList());
+    }
+    public List<Car> getCarByHorsepower(int horsepower){
+        var horsepowerCar = carRepository.findAll();
+        return horsepowerCar.stream()
+                .filter(car -> car.getHorsepower()==horsepower)
+                .collect(Collectors.toList());
+    }
 }
