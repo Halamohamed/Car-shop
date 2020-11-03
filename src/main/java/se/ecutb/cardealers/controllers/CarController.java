@@ -2,6 +2,7 @@ package se.ecutb.cardealers.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -42,11 +43,13 @@ public class CarController {
 
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCar(@Validated @RequestBody Car car, @PathVariable String id){
         carService.updateCar(car,id);
     }
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable String id){
         carService.deleteCar(id);
     }
