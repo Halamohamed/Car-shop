@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.Year;
 import java.util.List;
 
 @Data
