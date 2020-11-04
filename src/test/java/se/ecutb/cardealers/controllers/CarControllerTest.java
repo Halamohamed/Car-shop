@@ -14,11 +14,13 @@ import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import se.ecutb.cardealers.entities.Car;
 import se.ecutb.cardealers.repositories.CarRepository;
@@ -36,16 +38,19 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @WebMvcTest(CarController.class)
+
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriPort = 8010)
 @ActiveProfiles("test")
 public class CarControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
     @MockBean
     private CarRepository carRepository;
@@ -111,7 +116,7 @@ public class CarControllerTest {
 
         given(carRepository.save(any())).willReturn(getValidCar());
 
-       // CarControllerTest fields = new CarControllerTest().ConstrainedFields(Car.class);
+        //CarControllerTest.ConstrainedFields fields = new CarControllerTest().ConstrainedFields(Car.class);
 
         mockMvc.perform(post("api/shop/cars")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -152,6 +157,17 @@ public class CarControllerTest {
         return Car.builder()
                 .id(UUID.randomUUID().toString())
                 .brand("Volvo").model("xc90").registerNo("volvo-999").price(300000.0).yearModel(2018).weight(3000).numOfSeats(5).equipment(null).mileNo(1000).fuel("disel").gearbox("automate").horsepower(226).carType("SEDAN").carAge("2 year").status("STOCK").build();
+    }
+    private static class ConstrainedFields {
+        private final ConstraintDescriptions constraintDescriptions;
+
+        ConstrainedFields(Class<?> input) {
+            this.constraintDescriptions = new ConstraintDescriptions(input);
+        }
+
+        private FieldDescriptor withPath(String path) {
+            return fieldWithPath(path).attributes(key("constraints").value(StringUtils.collectionToDelimitedString(this.constraintDescriptions.descriptionsForProperty(path), ". ")));
+        }
     }
 
 }

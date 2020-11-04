@@ -1,3 +1,1 @@
-{"@timestamp":"2020-11-03T11:31:41.086+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"25256","thread":"http-nio-8010-exec-1","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
-{"@timestamp":"2020-11-03T11:33:17.008+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"25820","thread":"http-nio-8010-exec-1","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
-{"@timestamp":"2020-11-03T11:33:50.544+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"25820","thread":"http-nio-8010-exec-4","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-04T19:56:22.187+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"31904","thread":"http-nio-8010-exec-9","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
