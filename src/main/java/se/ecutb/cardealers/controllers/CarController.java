@@ -47,6 +47,7 @@ public class CarController {
     public void updateCar(@Validated @RequestBody Car car, @PathVariable String id){
         carService.updateCar(car,id);
     }
+
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
