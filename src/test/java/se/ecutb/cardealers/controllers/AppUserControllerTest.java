@@ -32,11 +32,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -80,7 +80,7 @@ public class AppUserControllerTest {
         mockMvc.perform(get("/api/shop/users/{id}", UUID.randomUUID().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("shop/users-one",
+                .andDo(document("shop/users-get-one",
                         pathParameters(
                                 parameterWithName("id").description("UUID string of desired user to get.")
                         ),
@@ -134,7 +134,7 @@ public class AppUserControllerTest {
                         )));
     }
 
-    //@Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void updateUser() throws Exception {
         AppUser user = getValidUser();
@@ -166,7 +166,7 @@ public class AppUserControllerTest {
                         )));
     }
 
-    //@Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void deleteUser() throws Exception {
 

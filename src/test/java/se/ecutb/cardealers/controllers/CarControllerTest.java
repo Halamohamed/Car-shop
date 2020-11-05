@@ -31,12 +31,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -71,7 +70,7 @@ public class CarControllerTest {
                 .andDo(document("shop/cars-get-all"));
     }
 
-    //@Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void getCarById()throws Exception{
         given(carRepository.findById(any())).willReturn(Optional.of(getValidCar()));
@@ -140,13 +139,13 @@ public class CarControllerTest {
                         )));
     }
 
-    //@Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void updateCar() throws Exception {
         Car car = getValidCar();
         String carJson = objectMapper.writeValueAsString(car);
-        carJson = carJson.replace("}",",\"car \":\"" + car.getRegisterNo() + "\"}");
-        System.out.println("car:\n" + carJson);
+     //   carJson = carJson.replace("}",",\"car \":\"" + car.getId() + "\"}");
+
 
         given(carRepository.existsById(any())).willReturn(true);
 
@@ -161,7 +160,7 @@ public class CarControllerTest {
                         pathParameters(
                                 parameterWithName("id").description("UUID string of desired car to update.")
                         ),
-                        responseFields(
+                        requestFields(
                                 fieldWithPath("id").description("Car ID"),
                                 fieldWithPath("brand").description("Cars Brand "),
                                 fieldWithPath("model").description("Cars Model"),
@@ -181,8 +180,21 @@ public class CarControllerTest {
                         )));
 
     }
+    @Test
+    @WithMockUser(value = "admin", roles = {"ADMIN"})
+    void deleteCar() throws Exception {
 
-    private Car getValidCar() {
+        given(carRepository.existsById(any())).willReturn(true);
+
+        mockMvc.perform(delete("/api/shop/cars/{id}", UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andDo(document("shop/cars-delete",
+                        pathParameters(
+                                parameterWithName("id").description("UUID string of desired car to delete.")
+                        )));
+    }
+
+        private Car getValidCar() {
         return Car.builder()
                 .id(UUID.randomUUID().toString())
                 .brand("Volvo").model("xc90").registerNo("volvo-999").price(300000.0).yearModel(2018).weight(3000).numOfSeats(5).equipment(null).mileNo(1000).fuel("disel").gearbox("automate").horsepower(226).carType("SEDAN").carAge("2 year").status("STOCK").build();
