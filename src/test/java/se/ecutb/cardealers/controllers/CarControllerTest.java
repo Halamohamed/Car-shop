@@ -29,26 +29,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-//@WebMvcTest(CarController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriPort = 4000)
 @ActiveProfiles("test")
 public class CarControllerTest {
 
-    //@Autowired
     private MockMvc mockMvc;
     @MockBean
     private CarRepository carRepository;
@@ -74,7 +73,7 @@ public class CarControllerTest {
                 .andDo(document("shop/cars-get-all"));
     }
 
-    @Test
+    //@Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void getCarById()throws Exception{
         given(carRepository.findById(any())).willReturn(Optional.of(getValidCar()));
@@ -118,7 +117,7 @@ public class CarControllerTest {
 
         CarControllerTest.ConstrainedFields fields = new CarControllerTest.ConstrainedFields(Car.class);
 
-        mockMvc.perform(post("api/shop/cars")
+        mockMvc.perform(post("/api/shop/cars")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(carJson))
                 .andExpect(status().isCreated())
@@ -131,7 +130,7 @@ public class CarControllerTest {
                                 fieldWithPath("price").description("Cars price"),
                                 fieldWithPath("yearModel").description("Cars year model"),
                                 fieldWithPath("weight").description("Cars weight"),
-                                fieldWithPath("numOfSeat").description("Cars number Of Seat"),
+                                fieldWithPath("numOfSeats").description("Cars number Of Seat"),
                                 fieldWithPath("equipment").description("Cars equipment"),
                                 fieldWithPath("mileNo").description("Cars mile number"),
                                 fieldWithPath("fuel").description("Cars fuel"),
@@ -143,7 +142,7 @@ public class CarControllerTest {
                         )));
     }
 
-    @Test
+    //@Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void updateCar() throws Exception {
         Car car = getValidCar();
@@ -151,7 +150,37 @@ public class CarControllerTest {
         carJson = carJson.replace("}",",\"car \":\"" + car.getRegisterNo() + "\"}");
         System.out.println("car:\n" + carJson);
 
+        given(carRepository.existsById(any())).willReturn(true);
+
         CarControllerTest.ConstrainedFields fields = new CarControllerTest.ConstrainedFields(Car.class);
+
+
+        mockMvc.perform(put("/api/shop/cars/{id}", UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(carJson))
+                .andExpect(status().isNoContent())
+                .andDo(document("shop/cars-update",
+                        pathParameters(
+                                parameterWithName("id").description("UUID string of desired car to update.")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("Car ID"),
+                                fieldWithPath("brand").description("Cars Brand "),
+                                fieldWithPath("model").description("Cars Model"),
+                                fieldWithPath("registerNo").description("Cars Register number"),
+                                fieldWithPath("price").description("Cars price"),
+                                fieldWithPath("yearModel").description("Cars year model"),
+                                fieldWithPath("weight").description("Cars weight"),
+                                fieldWithPath("numOfSeats").description("Cars number Of Seat"),
+                                fieldWithPath("equipment").description("Cars equipment"),
+                                fieldWithPath("mileNo").description("Cars mile number"),
+                                fieldWithPath("fuel").description("Cars fuel"),
+                                fieldWithPath("gearbox").description("Cars gearbox"),
+                                fieldWithPath("horsepower").description("Cars horsepower"),
+                                fieldWithPath("carType").description("Cars type"),
+                                fieldWithPath("carAge").description("Cars age"),
+                                fieldWithPath("status").description("Cars status")
+                        )));
 
     }
 

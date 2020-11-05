@@ -23,7 +23,6 @@ import se.ecutb.cardealers.services.MyUserDetailsService;
  */
 @Configuration
 @EnableWebSecurity
-//@ComponentScan("se.ecutb.cardealers")
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -40,9 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      /*  CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding("UTF-8");
-        filter.setForceEncoding(true);*/
         http.formLogin().disable()
                 .csrf().disable()
                 .authorizeRequests()
@@ -65,9 +61,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-   /* @Bean
-    ServletWebServerFactory servletWebServerFactory(){
-        return new TomcatServletWebServerFactory();
-    }
-*/
 }

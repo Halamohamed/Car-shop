@@ -12,11 +12,14 @@ import se.ecutb.cardealers.entities.AppUser;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
+
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AppUserService userService;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userService.findUserByUsername(username);

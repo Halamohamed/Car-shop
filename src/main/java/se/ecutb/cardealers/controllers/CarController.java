@@ -1,6 +1,7 @@
 package se.ecutb.cardealers.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import se.ecutb.cardealers.entities.Car;
 import se.ecutb.cardealers.services.CarService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -38,7 +40,8 @@ public class CarController {
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @PostMapping
     public ResponseEntity<Car> saveCar(@Validated @RequestBody Car car){
-        return ResponseEntity.ok(carService.saveCar(car));
+        var savedCar = carService.saveCar(car);
+        return ResponseEntity.created(URI.create("/api/shop/cars"+savedCar.getId())).body(savedCar);
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
@@ -90,9 +93,9 @@ public class CarController {
         return ResponseEntity.ok(carService.getCarByFuel(fuel));
     }
 
-    @GetMapping("/noOfSeat/{noOfSeat}")
-    public ResponseEntity<List<Car>> getCarByNoOfSeat(@PathVariable int noOfSeat){
-        return ResponseEntity.ok(carService.getCarByNoOfSeats(noOfSeat));
+    @GetMapping("/numOfSeat/{numOfSeat}")
+    public ResponseEntity<List<Car>> getCarByNoOfSeat(@PathVariable int numOfSeat){
+        return ResponseEntity.ok(carService.getCarByNoOfSeats(numOfSeat));
     }
 
     @GetMapping("/gearbox/{gearbox}")
