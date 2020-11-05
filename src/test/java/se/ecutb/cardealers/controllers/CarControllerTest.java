@@ -33,24 +33,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@WebMvcTest(CarController.class)
+//@WebMvcTest(CarController.class)
 
 @ExtendWith(RestDocumentationExtension.class)
-@AutoConfigureRestDocs(uriPort = 8010)
+@AutoConfigureRestDocs(uriPort = 4000)
 @ActiveProfiles("test")
 public class CarControllerTest {
 
-    @Autowired
+    //@Autowired
     private MockMvc mockMvc;
     @MockBean
     private CarRepository carRepository;
@@ -81,7 +79,7 @@ public class CarControllerTest {
     void getCarById()throws Exception{
         given(carRepository.findById(any())).willReturn(Optional.of(getValidCar()));
 
-        mockMvc.perform(get("api/shop/cars/{id}", UUID.randomUUID().toString())
+        mockMvc.perform(get("/api/shop/cars/{id}", UUID.randomUUID().toString())
         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("shop/cars-get-one",
@@ -96,9 +94,9 @@ public class CarControllerTest {
                                 fieldWithPath("price").description("Cars price"),
                                 fieldWithPath("yearModel").description("Cars year model"),
                                 fieldWithPath("weight").description("Cars weight"),
-                                fieldWithPath("nuOfSeat").description("Cars number Of Seat"),
+                                fieldWithPath("numOfSeats").description("Cars number Of Seat"),
                                 fieldWithPath("equipment").description("Cars equipment"),
-                                fieldWithPath("milNo").description("Cars mile number"),
+                                fieldWithPath("mileNo").description("Cars mile number"),
                                 fieldWithPath("fuel").description("Cars fuel"),
                                 fieldWithPath("gearbox").description("Cars gearbox"),
                                 fieldWithPath("horsepower").description("Cars horsepower"),
@@ -108,6 +106,8 @@ public class CarControllerTest {
                         )));
     }
 
+    @Test
+    @WithMockUser(value = "admin", roles = {"ADMIN"})
     void saveCar()throws Exception {
         Car car = getValidCar();
         car.setId(null);
@@ -116,7 +116,7 @@ public class CarControllerTest {
 
         given(carRepository.save(any())).willReturn(getValidCar());
 
-        //CarControllerTest.ConstrainedFields fields = new CarControllerTest().ConstrainedFields(Car.class);
+        CarControllerTest.ConstrainedFields fields = new CarControllerTest.ConstrainedFields(Car.class);
 
         mockMvc.perform(post("api/shop/cars")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -131,9 +131,9 @@ public class CarControllerTest {
                                 fieldWithPath("price").description("Cars price"),
                                 fieldWithPath("yearModel").description("Cars year model"),
                                 fieldWithPath("weight").description("Cars weight"),
-                                fieldWithPath("nuOfSeat").description("Cars number Of Seat"),
+                                fieldWithPath("numOfSeat").description("Cars number Of Seat"),
                                 fieldWithPath("equipment").description("Cars equipment"),
-                                fieldWithPath("milNo").description("Cars mile number"),
+                                fieldWithPath("mileNo").description("Cars mile number"),
                                 fieldWithPath("fuel").description("Cars fuel"),
                                 fieldWithPath("gearbox").description("Cars gearbox"),
                                 fieldWithPath("horsepower").description("Cars horsepower"),
@@ -143,13 +143,15 @@ public class CarControllerTest {
                         )));
     }
 
+    @Test
+    @WithMockUser(value = "admin", roles = {"ADMIN"})
     void updateCar() throws Exception {
         Car car = getValidCar();
         String carJson = objectMapper.writeValueAsString(car);
         carJson = carJson.replace("}",",\"car \":\"" + car.getRegisterNo() + "\"}");
         System.out.println("car:\n" + carJson);
 
-        //CarControllerTest.ConstrainedFields fields = new CarControllerTest.ConstrainedFields(Car.class);
+        CarControllerTest.ConstrainedFields fields = new CarControllerTest.ConstrainedFields(Car.class);
 
     }
 

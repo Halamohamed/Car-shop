@@ -5,24 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.BootstrapWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StringUtils;
@@ -31,8 +24,6 @@ import se.ecutb.cardealers.entities.AppUser;
 import se.ecutb.cardealers.entities.Roles;
 import se.ecutb.cardealers.repositories.AppUserRepository;
 
-import javax.annotation.security.RunAs;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,12 +40,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-//@WebMvcTest(AppUserController.class)
+
 @ExtendWith(RestDocumentationExtension.class)
-//@Runwith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/context.xml")
-@BootstrapWith(value= SpringBootTestContextBootstrapper.class)
-@AutoConfigureRestDocs(uriPort = 8010)
+
+@AutoConfigureRestDocs(uriPort = 4000)
 @ActiveProfiles("test")
 public class AppUserControllerTest {
 
@@ -83,7 +72,7 @@ public class AppUserControllerTest {
                 .andDo(document("shop/users-get-all"));
     }
 
-   // @Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void findUserById() throws Exception {
         given(userRepository.findById(any())).willReturn(Optional.of(getValidUser()));
@@ -106,7 +95,7 @@ public class AppUserControllerTest {
                         )));
     }
 
-   // @Test
+    @Test
     @WithMockUser(value = "admin", roles = {"ADMIN"})
     void saveUser() throws Exception {
         AppUser user = getValidUser();
@@ -118,22 +107,21 @@ public class AppUserControllerTest {
 
         AppUserControllerTest.ConstrainedFields fields = new AppUserControllerTest.ConstrainedFields(AppUser.class);
 
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post("/api/shop/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJson))
                 .andExpect(status().isCreated())
-                .andDo(document("v1/users-new",
+                .andDo(document("shop/users-new",
                         requestFields(
                                 fields.withPath("id").ignored(),
                                 fields.withPath("firstname").description("Users firstname"),
                                 fields.withPath("lastname").description("Users lastname"),
-                                fields.withPath("birthday").description("Users birthday")/*.type(LocalDate.class)*/,
                                 fields.withPath("mail").description("Users mail address"),
                                 fields.withPath("phone").description("Users phone number"),
                                 fields.withPath("username").description("Users username"),
                                 fields.withPath("password").description("Users password"),
-                                fields.withPath("acl").description("Users authorities"),
-                                fields.withPath("pet").description("Users pet").optional()
+                                fields.withPath("acl").description("Users authorities")
+
                         ),
                         responseFields(
                                 fieldWithPath("id").description("User ID"),

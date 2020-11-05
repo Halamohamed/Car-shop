@@ -107,12 +107,6 @@
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
-        </dependency>
 
     </dependencies>
 
@@ -146,12 +140,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>car-resources</id>
+                        <id>copy-resources</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>car-resources</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>
@@ -170,5 +168,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

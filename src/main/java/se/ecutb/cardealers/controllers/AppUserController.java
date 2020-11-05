@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import se.ecutb.cardealers.entities.AppUser;
 import se.ecutb.cardealers.services.AppUserService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,9 @@ public class AppUserController {
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @PostMapping
     public ResponseEntity<AppUser> saveUser(@Validated @RequestBody AppUser user){
-        return ResponseEntity.ok(userService.saveUser(user));
+        var savedUser = userService.saveUser(user);
+        var uri = URI.create("/api/shop/users"+savedUser.getId());
+        return ResponseEntity.created(uri).body(savedUser);
     }
     @Secured({"ROLE_ADMIN", "ROLE_VD", "ROLE_MANAGER"})
     @PutMapping("/{id}")

@@ -1,1 +1,7 @@
-{"@timestamp":"2020-11-04T19:56:22.187+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"31904","thread":"http-nio-8010-exec-9","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:03:32.196+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"32716","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:12:30.777+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"7312","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:19:58.974+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"31212","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:19:59.259+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"31212","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:21:45.221+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"24440","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:21:45.422+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"24440","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
+{"@timestamp":"2020-11-05T09:23:16.284+01:00","@version":"1","severity":"WARN","service":"car-dealers-Application","pid":"7764","thread":"main","class":"se.ecutb.cardealers.services.CarService","message":"fresh data "}
