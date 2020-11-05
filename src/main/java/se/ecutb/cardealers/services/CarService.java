@@ -26,13 +26,13 @@ public class CarService {
         log.info("Request to find all cars");
         log.warn("fresh data");
         var cars = carRepository.findAll();
-        if(brand != null) cars = getCarByBrand(brand);
+        if(brand != null) cars = cars.stream().filter(car -> car.getBrand().equals(brand)).collect(Collectors.toList());
 
-        if(model != null) cars = getCarByModel(model);
+        if(model != null) cars = cars.stream().filter(car -> car.getModel().equals(model)).collect(Collectors.toList());
 
-        if(status != null) cars = getCarByStatus(status);
+        if(status != null) cars = cars.stream().filter(car -> car.getStatus().equals(status)).collect(Collectors.toList());
 
-        if(price != null)   cars = getCarByPrice(price);
+        if(price != null)   cars = cars.stream().filter(car -> car.getPrice().equals(price)).collect(Collectors.toList());
 
         if(sort)  cars.sort(Comparator.comparing(Car::getPrice));
 
